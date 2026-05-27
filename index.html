@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Sanjana Senapati — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --cream:#F5EFE0;
+  --beige:#E8D9C0;
+  --gold:#C9A84C;
+  --gold-light:#E2C87A;
+  --brown:#6B4C2A;
+  --coffee:#3D2B1F;
+  --warm-black:#0E0C0B;
+  --terra:#A25F43;
+  --terra-light:#D4B29E;
+  --muted:#A69990;
+  --card-bg:rgba(255,248,235,0.04);
+  --glass:rgba(255,248,235,0.06);
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--warm-black);color:var(--cream);font-family:'DM Sans',sans-serif;cursor:none;overflow-x:hidden}
+
+/* CUSTOM CURSOR */
+#cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.15s ease;mix-blend-mode:difference}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--gold-light);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.25s ease;opacity:0.5}
+
+/* NOISE OVERLAY */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9990;opacity:0.5}
+
+/* FLOATING ORBS */
+.orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;animation:orb-float 12s ease-in-out infinite alternate}
+.orb1{width:500px;height:500px;background:radial-gradient(circle,rgba(212,178,158,0.08),transparent 70%);top:-100px;right:-100px}
+.orb2{width:400px;height:400px;background:radial-gradient(circle,rgba(162,95,67,0.06),transparent 70%);bottom:10%;left:-80px;animation-delay:-5s}
+.orb3{width:300px;height:300px;background:radial-gradient(circle,rgba(107,76,42,0.1),transparent 70%);top:40%;left:30%;animation-delay:-8s}
+@keyframes orb-float{0%{transform:translateY(0) scale(1)}100%{transform:translateY(-40px) scale(1.05)}}
+
+/* LOADING SCREEN */
+#loader{position:fixed;inset:0;background:var(--warm-black);z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.8s ease,visibility 0.8s ease}
+#loader.hide{opacity:0;visibility:hidden}
+.loader-name{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,6vw,5rem);font-style:italic;color:var(--gold);letter-spacing:0.02em;animation:loader-in 1.2s ease forwards;opacity:0}
+.loader-line{width:0;height:1px;background:var(--gold-light);margin:1.5rem auto;animation:loader-line 1.5s 0.8s ease forwards}
+.loader-sub{font-size:0.8rem;letter-spacing:0.3em;color:var(--muted);text-transform:uppercase;opacity:0;animation:loader-fade 1s 1.5s ease forwards}
+@keyframes loader-in{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:none}}
+@keyframes loader-line{0%{width:0}100%{width:120px}}
+@keyframes loader-fade{0%{opacity:0}100%{opacity:1}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem 4vw;display:flex;align-items:center;justify-content:space-between;transition:background 0.4s ease}
+nav.scrolled{background:rgba(14,12,11,0.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(212,178,158,0.08)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-style:italic;color:var(--gold);letter-spacing:0.08em}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;transition:color 0.3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width 0.3s}
+.nav-links a:hover,.nav-links a.active{color:var(--cream)}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+
+/* SECTIONS */
+section{position:relative;z-index:1;padding:8rem 6vw}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;padding-top:6rem;overflow:hidden}
+.hero-inner{display:grid;grid-template-columns:1.2fr 0.8fr;gap:4rem;align-items:center;width:100%;max-width:1300px;margin:0 auto}
+.hero-tag{font-size:0.72rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;opacity:0;animation:reveal-up 0.8s 2s ease forwards}
+.hero-name{font-family:'Playfair Display',serif;font-size:clamp(3.5rem,6.5vw,6.5rem);font-weight:700;line-height:1.05;margin-bottom:1.5rem;opacity:0;animation:reveal-up 0.9s 2.2s ease forwards;color:var(--cream)}
+.hero-name span{display:block;color:var(--gold);font-style:italic;font-weight:400}
+.hero-role{font-size:1.1rem;color:var(--muted);margin-bottom:2.5rem;min-height:2rem;opacity:0;animation:reveal-up 0.8s 2.5s ease forwards;font-family:'Playfair Display',serif;font-style:italic}
+.hero-role .role-text{color:var(--terra-light);font-style:normal;font-family:'DM Sans',sans-serif;font-weight:400;margin-left:4px}
+.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;opacity:0;animation:reveal-up 0.8s 2.8s ease forwards}
+.btn-primary{padding:0.9rem 2.2rem;background:var(--cream);color:var(--warm-black);font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;border:none;cursor:none;transition:all 0.3s;border-radius:30px}
+.btn-primary:hover{background:var(--beige);transform:translateY(-2px)}
+.btn-outline{padding:0.9rem 2.2rem;background:transparent;color:var(--muted);font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;border:1px solid rgba(212,178,158,0.2);cursor:none;transition:all 0.3s;border-radius:30px}
+.btn-outline:hover{border-color:var(--gold);color:var(--cream);transform:translateY(-2px)}
+
+/* PORTRAIT CARD */
+.portrait-wrap{position:relative;display:flex;justify-content:center;opacity:0;animation:reveal-up 1s 2.4s ease forwards}
+.portrait-frame{width:300px;height:400px;border-radius:16px;overflow:hidden;position:relative;background:#141110;border:1px solid rgba(212,178,158,0.15);padding:2rem;display:flex;flex-direction:column;justify-content:between;box-shadow:0 30px 60px rgba(0,0,0,0.4)}
+.portrait-img{height:100%;display:flex;flex-direction:column;justify-content:space-between}
+.portrait-tag{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--gold);background:rgba(201,168,76,0.1);padding:0.3rem 0.8rem;border-radius:6px;align-self:flex-start}
+.portrait-details{border-t:1px solid rgba(212,178,158,0.1);padding-top:1.5rem}
+.portrait-loc{font-family:'Playfair Display',serif;font-style:italic;font-size:0.95rem;color:var(--cream)}
+
+/* SECTION HEADINGS */
+.sec-eyebrow{font-size:0.7rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,3.5vw,3.2rem);font-weight:400;line-height:1.2;margin-bottom:1rem}
+.sec-title em{color:var(--gold-light);font-style:italic}
+.sec-divider{width:60px;height:1px;background:var(--gold);margin:1.5rem 0;opacity:0.3}
+
+/* ABOUT */
+#about .about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:5rem;align-items:start;max-width:1200px;margin:0 auto}
+.about-text p{color:var(--muted);line-height:1.9;margin-bottom:1.5rem;font-size:0.95rem}
+.about-text p strong{color:var(--cream);font-weight:400}
+.about-tags{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:2.5rem}
+.tag{padding:0.4rem 1.1rem;border:1px solid rgba(212,178,158,0.15);border-radius:20px;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--terra-light);transition:all 0.3s}
+.tag:hover{background:rgba(212,178,158,0.05);border-color:var(--gold)}
+.about-stats{display:flex;flex-direction:column;gap:1.5rem}
+.stat-card{padding:2rem;background:var(--card-bg);border:1px solid rgba(212,178,158,0.08);border-radius:12px;transition:border-color 0.3s}
+.stat-card:hover{border-color:rgba(212,178,158,0.2)}
+.stat-num{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:400;color:var(--gold);line-height:1}
+.stat-label{font-size:0.72rem;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;margin-top:0.5rem}
+
+/* SKILLS */
+#skills .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.2rem;max-width:1200px;margin:3rem auto 0}
+.skill-card{padding:1.8rem;background:var(--card-bg);border:1px solid rgba(212,178,158,0.06);border-radius:12px;transition:all 0.35s}
+.skill-card:hover{border-color:rgba(212,178,158,0.2);transform:translateY(-4px)}
+.skill-icon{font-size:1.3rem;margin-bottom:1rem;opacity:0.8}
+.skill-name{font-size:0.8rem;font-weight:500;margin-bottom:1rem;color:var(--cream);letter-spacing:0.06em;text-transform:uppercase}
+.skill-bar{height:2px;background:rgba(212,178,158,0.1);border-radius:1px;overflow:hidden}
+.skill-fill{height:100%;background:var(--gold);border-radius:1px;transform:scaleX(0);transform-origin:left;transition:transform 1s cubic-bezier(0.22,1,0.36,1)}
+.skill-card.in-view .skill-fill{transform:scaleX(1)}
+
+/* PROJECTS */
+#projects .projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:2rem;max-width:1200px;margin:3rem auto 0}
+.project-card{background:var(--card-bg);border:1px solid rgba(212,178,158,0.08);border-radius:16px;overflow:hidden;transition:all 0.4s}
+.project-card:hover{transform:translateY(-6px);border-color:rgba(212,178,158,0.25);box-shadow:0 20px 40px rgba(0,0,0,0.3)}
+.project-thumb{height:180px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#141110;border-bottom:1px solid rgba(212,178,158,0.05)}
+.project-icon{font-size:2.5rem;opacity:0.4;transition:all 0.4s}
+.project-card:hover .project-icon{opacity:0.7;transform:scale(1.05)}
+.project-body{padding:2rem}
+.project-num{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--terra-light);margin-bottom:0.5rem}
+.project-name{font-family:'Playfair Display',serif;font-size:1.35rem;margin-bottom:0.8rem;color:var(--cream);font-weight:400}
+.project-desc{font-size:0.85rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
+.project-tech{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.8rem}
+.tech-tag{padding:0.3rem 0.8rem;background:rgba(212,178,158,0.04);border:1px solid rgba(212,178,158,0.1);border-radius:20px;font-size:0.65rem;letter-spacing:0.05em;color:var(--muted)}
+.project-links{display:flex;gap:0.8rem}
+.proj-btn{padding:0.6rem 1.4rem;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;border-radius:30px;transition:all 0.3s;cursor:none}
+.proj-btn.gh{background:transparent;color:var(--muted);border:1px solid rgba(212,178,158,0.15)}
+.proj-btn.gh:hover{color:var(--cream);border-color:var(--gold)}
+.proj-btn.live{background:var(--cream);color:var(--warm-black)}
+.proj-btn.live:hover{background:var(--beige)}
+
+/* TIMELINE */
+#journey .timeline{max-width:800px;margin:4rem auto 0;position:relative;padding-left:2.5rem}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,rgba(212,178,158,0.2) 20%,rgba(212,178,158,0.2) 80%,transparent)}
+.timeline-item{position:relative;margin-bottom:4rem;padding-left:2rem;opacity:0;transform:translateX(-20px);transition:all 0.6s ease}
+.timeline-item.in-view{opacity:1;transform:none}
+.timeline-dot{position:absolute;left:-2.85rem;top:0.35rem;width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.timeline-date{font-size:0.68rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--terra-light);margin-bottom:0.6rem}
+.timeline-title{font-family:'Playfair Display',serif;font-size:1.25rem;margin-bottom:0.6rem;font-weight:400}
+.timeline-desc{font-size:0.88rem;color:var(--muted);line-height:1.7}
+
+/* CREATIVE ACCENT */
+#creative{background:linear-gradient(180deg,transparent,rgba(42,32,27,0.1),transparent)}
+.creative-inner{max-width:1200px;margin:0 auto}
+.creative-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;margin-top:3rem}
+.creative-text p{color:var(--muted);line-height:1.9;margin-bottom:1.5rem;font-size:0.95rem}
+.creative-items{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.creative-card{padding:2rem;background:var(--glass);border:1px solid rgba(212,178,158,0.06);border-radius:12px;transition:all 0.3s}
+.creative-card:hover{border-color:rgba(212,178,158,0.15);transform:translateY(-3px)}
+.creative-card-icon{font-size:1.6rem;margin-bottom:1rem;opacity:0.8}
+.creative-card-title{font-family:'Playfair Display',serif;font-size:1.05rem;margin-bottom:0.5rem;font-style:italic;color:var(--cream)}
+.creative-card-desc{font-size:0.8rem;color:var(--muted);line-height:1.6}
+
+/* CONTACT */
+#contact .contact-inner{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+.contact-form{display:flex;flex-direction:column;gap:1.2rem}
+.form-group{display:flex;flex-direction:column;gap:0.5rem}
+.form-label{font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted)}
+.form-input{background:rgba(255,248,235,0.02);border:1px solid rgba(212,178,158,0.12);border-radius:8px;padding:1rem 1.2rem;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.88rem;transition:border-color 0.3s;outline:none}
+.form-input:focus{border-color:var(--gold)}
+.form-input::placeholder{color:rgba(166,153,144,0.4)}
+textarea.form-input{height:120px;resize:none}
+.btn-send{padding:1rem 2.5rem;background:rgba(212,178,158,0.08);border:1px solid rgba(212,178,158,0.15);color:var(--cream);font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;cursor:none;border-radius:30px;transition:all 0.3s;align-self:flex-start}
+.btn-send:hover{background:var(--cream);color:var(--warm-black);border-color:var(--cream);transform:translateY(-2px)}
+
+.contact-info{display:flex;flex-direction:column;gap:2rem}
+.contact-intro{color:var(--muted);line-height:1.8;font-size:0.95rem}
+.contact-links{display:flex;flex-direction:column;gap:1rem}
+.c-link{display:flex;align-items:center;gap:1rem;text-decoration:none;color:var(--muted);font-size:0.85rem;transition:color 0.3s}
+.c-link:hover{color:var(--cream)}
+.c-link-icon{width:36px;height:36px;border:1px solid rgba(212,178,158,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--gold);transition:all 0.3s}
+.c-link:hover .c-link-icon{background:rgba(212,178,158,0.05);border-color:var(--gold)}
+
+/* FOOTER */
+footer{padding:4rem 6vw;border-top:1px solid rgba(212,178,158,0.05);text-align:center}
+.footer-quote{font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;color:var(--muted);margin-bottom:1.5rem}
+.footer-quote em{color:var(--gold-light)}
+.footer-copy{font-size:0.7rem;letter-spacing:0.15em;color:rgba(166,153,144,0.4);text-transform:uppercase}
+
+/* ANIMATIONS */
+@keyframes reveal-up{0%{opacity:0;transform:translateY(25px)}100%{opacity:1;transform:none}}
+.reveal{opacity:0;transform:translateY(25px);transition:all 0.8s cubic-bezier(0.22,1,0.36,1)}
+.reveal.in-view{opacity:1;transform:none}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
+
+@media(max-width:900px){
+  .hero-inner,.about-grid,.creative-grid,.contact-inner{grid-template-columns:1fr!important;gap:3rem!important}
+  .portrait-wrap{order:-1}
+  section{padding:6rem 4vw}
+}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- GLOW INTERFACES -->
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-name">Sanjana Senapati</div>
+  <div class="loader-line"></div>
+  <div class="loader-sub">Portfolio Archive // 2026</div>
+</div>
+
+<!-- NAVIGATION -->
+<nav id="navbar">
+  <div class="nav-logo">S.S</div>
+  <ul class="nav-links">
+    <li><a href="#about">Identity</a></li>
+    <li><a href="#skills">Toolkit</a></li>
+    <li><a href="#projects">Creations</a></li>
+    <li><a href="#journey">Journey</a></li>
+    <li><a href="#creative">Aesthetic</a></li>
+    <li><a href="#contact">Connect</a></li>
+  </ul>
+</nav>
+
+<!-- HERO CONTEXT -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <p class="hero-tag">✦ Full-Stack Developer &amp; AI Architect</p>
+      <h1 class="hero-name">Sanjana<span>Senapati</span></h1>
+      <div class="hero-role">Exploring the lines of <span class="role-text" id="role-text">Full-Stack Engineering</span><span id="cursor-blink" style="color:var(--gold);animation:blink 1s infinite">|</span></div>
+      <div class="hero-ctas">
+        <a href="#projects" class="btn-primary">Explore Vault</a>
+        <a href="#contact" class="btn-outline">Say Hello</a>
+      </div>
+    </div>
+    <div class="portrait-wrap">
+      <div class="portrait-frame">
+        <div class="portrait-img">
+          <span class="portrait-tag">Curated Stack</span>
+          <div class="portrait-details">
+            <div style="font-size:0.75rem;color:var(--muted);letter-spacing:0.05em;margin-bottom:0.4rem;line-height:1.6">
+              ✦ Python &amp; Deep ML<br>
+              ✦ Next.js / TypeScript<br>
+              ✦ Tailwind &amp; UI Logic
+            </div>
+            <div class="portrait-loc">Berhampur, IN</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IDENTITY PROFILE -->
+<section id="about">
+  <div class="about-grid">
+    <div class="reveal">
+      <p class="sec-eyebrow">✦ Identity Ethos</p>
+      <h2 class="sec-title">Engineering interfaces with a <em>soft, cinematic</em> touch.</h2>
+      <div class="sec-divider"></div>
+      <div class="about-text">
+        <p>I am a <strong>Full-Stack and AI/ML Web Developer</strong> based in Berhampur, Odisha. Currently pursuing my degree, I spend my time navigating complex logic systems and framing software through an intentional design perspective.</p>
+        <p>Beyond clean lines of code, I operate heavily within literary spheres. I approach application architecture like structured prose—seeking symmetry, tracking textual analytics patterns, and spending my alternative hours cataloging classic curation frameworks.</p>
+        <p>Whether optimizing data models or crafting frontend pipelines, I focus on building digital systems that feel uniquely authentic, thoughtful, and highly optimized.</p>
+      </div>
+      <div class="about-tags">
+        <span class="tag">Full Stack</span>
+        <span class="tag">AI / ML Logic</span>
+        <span class="tag">Deep Learning</span>
+        <span class="tag">Data Structures</span>
+        <span class="tag">Classic Literature</span>
+        <span class="tag">Branding Curation</span>
+      </div>
+    </div>
+    <div>
+      <div class="about-stats">
+        <div class="stat-card reveal reveal-delay-1">
+          <div class="stat-num">4 / 8</div>
+          <div class="stat-label">Academic Semesters Completed</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-2">
+          <div class="stat-num">03</div>
+          <div class="stat-label">Core Digital Projects Formed</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-3">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Literary Vault Layers Tracking</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLKIT -->
+<section id="skills">
+  <div class="reveal" style="max-width:1200px;margin:0 auto">
+    <p class="sec-eyebrow">✦ Competencies</p>
+    <h2 class="sec-title">The Engineered <em>Toolkit</em></h2>
+    <div class="sec-divider"></div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card reveal reveal-delay-1" data-skill="88"><div class="skill-icon">🐍</div><div class="skill-name">Python Engine</div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+    <div class="skill-card reveal reveal-delay-1" data-skill="80"><div class="skill-icon">✨</div><div class="skill-name">TypeScript / JS</div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+    <div class="skill-card reveal reveal-delay-2" data-skill="78"><div class="skill-icon">⚛️</div><div class="skill-name">React Ecosystem</div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+    <div class="skill-card reveal reveal-delay-2" data-skill="75"><div class="skill-icon">▲</div><div class="skill-name">Next.js Core</div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+    <div class="skill-card reveal reveal-delay-3" data-skill="70"><div class="skill-icon">⚡</div><div class="skill-name">FastAPI / Node.js</div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+    <div class="skill-card reveal reveal-delay-1" data-skill="72"><div class="skill-icon">☁️</div><div class="skill-name">Supabase / SQL</div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+    <div class="skill-card reveal reveal-delay-2" data-skill="80"><div class="skill-icon">🤖</div><div class="skill-name">Machine Learning</div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+    <div class="skill-card reveal reveal-delay-3" data-skill="74"><div class="skill-icon">🧠</div><div class="skill-name">AI / NLP Networks</div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+    <div class="skill-card reveal reveal-delay-1" data-skill="85"><div class="skill-icon">💨</div><div class="skill-name">Tailwind UI Layouts</div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+    <div class="skill-card reveal reveal-delay-2" data-skill="85"><div class="skill-icon">🐙</div><div class="skill-name">Git Pipelines</div><div class="skill-bar"><div class="skill-fill"></div></div></div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="reveal" style="max-width:1200px;margin:0 auto">
+    <p class="sec-eyebrow">✦ Installations</p>
+    <h2 class="sec-title">Functional <em>Creations</em></h2>
+    <div class="sec-divider"></div>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-thumb"><div class="project-icon">📚</div></div>
+      <div class="project-body">
+        <div class="project-num">Project 01</div>
+        <div class="project-name">My Book Vault</div>
+        <p class="project-desc">A highly personalized literary tracking platform featuring comprehensive search processing and deep reading history data states.</p>
+        <div class="project-tech">
+          <span class="tech-tag">React Native</span><span class="tech-tag">FastAPI</span><span class="tech-tag">Supabase</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="proj-btn gh">Source</a>
+          <a href="#" class="proj-btn live">Live Archive</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-thumb"><div class="project-icon">🧠</div></div>
+      <div class="project-body">
+        <div class="project-num">Project 02</div>
+        <div class="project-name">Text Mood Analyzer</div>
+        <p class="project-desc">An algorithmic natural language interface built to process text sequences, parsing individual lines into targeted mood categories.</p>
+        <div class="project-tech">
+          <span class="tech-tag">Python</span><span class="tech-tag">NLP Logic</span><span class="tech-tag">Backend API</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="proj-btn gh">Source</a>
+          <a href="#" class="proj-btn live">Live Engine</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-2">
+      <div class="project-thumb"><div class="project-icon">🩺</div></div>
+      <div class="project-body">
+        <div class="project-num">Project 03</div>
+        <div class="project-name">Diabetes Predictor</div>
+        <p class="project-desc">An active diagnostic machine learning tool analyzing physical metrics through an optimized predictive training script framework.</p>
+        <div class="project-tech">
+          <span class="tech-tag">Streamlit</span><span class="tech-tag">Scikit-Learn</span><span class="tech-tag">Python</span>
+        </div>
+        <div class="project-links">
+          <a href="#" class="proj-btn gh">Source</a>
+          <a href="https://diabetes-predictor-by-shakti-and-sanjana.streamlit.app" target="_blank" class="proj-btn live">Live Tool ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY PATH -->
+<section id="journey">
+  <div class="reveal" style="max-width:1200px;margin:0 auto">
+    <p class="sec-eyebrow">✦ Record</p>
+    <h2 class="sec-title">Academic &amp; Vocational <em>Path</em></h2>
+    <div class="sec-divider"></div>
+  </div>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">Vocational Matrix</div>
+      <div class="timeline-title">AI/ML &amp; C Specialization // CTTC &amp; NIST University</div>
+      <p class="timeline-desc">Completed deep foundational vocational training matrices, specializing in system programming logic, predictive mathematics, and deep learning setups.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">Analysis Framework</div>
+      <div class="timeline-title">Research Publication Production</div>
+      <p class="timeline-desc">Authored "Ethical Implications of Artificial Intelligence in Modern Society"—evaluating algorithmic evolution dynamics framed through Kafkaesque literary lenses.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">Continuous Track</div>
+      <div class="timeline-title">Algorithmic Mastery &amp; Architectural Logic</div>
+      <p class="timeline-desc">Executing daily structures and algorithm challenges to refine runtime patterns and data processing logic benchmarks.</p>
+    </div>
+  </div>
+</section>
+
+<!-- AESTHETIC SPLIT -->
+<section id="creative">
+  <div class="creative-inner">
+    <div class="creative-grid">
+      <div class="reveal">
+        <p class="sec-eyebrow">✦ Aesthetic Curation</p>
+        <h2 class="sec-title">Intersections of <em>Art &amp; Automation</em></h2>
+        <div class="sec-divider"></div>
+        <div class="creative-text">
+          <p>I do not decouple technological infrastructure from visual composition. To me, a clean system architecture requires the same level of care, space, and balance as classic prose or fine editorial layouts.</p>
+          <p>Outside backend terminals, I run digital curation layouts, process complex literature analysis paradigms, and structure visual user-generated aesthetics across platforms.</p>
+        </div>
+      </div>
+      <div class="creative-items reveal reveal-delay-1">
+        <div class="creative-card">
+          <div class="creative-card-icon">📖</div>
+          <div class="creative-card-title">Classical Analysis</div>
+          <p class="creative-card-desc">Deep exploratory interest in historical prose structures, including edition tracking and film adaptation adaptations of Wuthering Heights.</p>
+        </div>
+        <div class="creative-card">
+          <div class="creative-card-icon">🥀</div>
+          <div class="creative-card-title">Visual Curation Space</div>
+          <p class="creative-card-desc">Developing clean visual landscapes and thematic aesthetic curation maps within creative communities.</p>
+        </div>
+        <div class="creative-card">
+          <div class="creative-card-icon">✍️</div>
+          <div class="creative-card-title">Lexical Expansion</div>
+          <p class="creative-card-desc">Assembling custom vocabularies and classical descriptions to articulate beauty, behavior, and visual architectures seamlessly.</p>
+        </div>
+        <div class="creative-card">
+          <div class="creative-card-icon">🎨</div>
+          <div class="creative-card-title">UI/UX Spatial Balance</div>
+          <p class="creative-card-desc">Focusing on organic depth layouts, fluid dark balances, and subtle interactive spaces across web media layers.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONNECT LAYER -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="reveal">
+      <p class="sec-eyebrow">✦ Communication</p>
+      <h2 class="sec-title">Establish <em>Connection</em></h2>
+      <div class="sec-divider"></div>
+      <div class="contact-info">
+        <p class="contact-intro">My inbox is always open for full-stack build opportunities, algorithmic collaborations, or intricate technical and literary conversations. Feel free to reach out anytime.</p>
+        <div class="contact-links">
+          <a href="mailto:sanjanasenapati14@gmail.com" class="c-link">
+            <span class="c-link-icon">✉</span>
+            sanjanasenapati14@gmail.com
+          </a>
+          <a href="#" class="c-link">
+            <span class="c-link-icon">in</span>
+            linkedin.com/in/sanjanasenapati
+          </a>
+          <a href="#" class="c-link">
+            <span class="c-link-icon">gh</span>
+            github.com/sanjanasenapati
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <form class="contact-form" onsubmit="return false">
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-input" placeholder="Your name..."/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="Your email address..."/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-input" placeholder="Write your narrative message..."></textarea>
+        </div>
+        <button type="submit" class="btn-send">Send Dispatch</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-quote">"There is a striking structural symmetry in both an optimized database index and a perfectly structured prose style."</p>
+  <p class="footer-copy">© 2026 Sanjana Senapati — Curated Experience.</p>
+</footer>
+
+<style>
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+</style>
+
+<script>
+// SPATIAL CURSOR INITIALIZATION
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=(mx-5)+'px';
+  cursor.style.top=(my-5)+'px';
+});
+function animRing(){
+  rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+  ring.style.left=(rx-18)+'px';
+  ring.style.top=(ry-18)+'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+document.querySelectorAll('a,button,.skill-card,.project-card,.creative-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(2.5)';ring.style.transform='scale(0.6)';ring.style.opacity='0.8'});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='';ring.style.transform='';ring.style.opacity='0.5'});
+});
+
+// LOADER HANDLING
+setTimeout(()=>document.getElementById('loader').classList.add('hide'),2400);
+
+// SCROLL TRACKING FOR NAV
+window.addEventListener('scroll',()=>{
+  const nav=document.getElementById('navbar');
+  nav.classList.toggle('scrolled',scrollY>60);
+  const secs=['about','skills','projects','journey','creative','contact'];
+  let cur='';
+  secs.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&el.getBoundingClientRect().top<200) cur=id;
+  });
+  document.querySelectorAll('.nav-links a').forEach(a=>{
+    a.classList.toggle('active',a.getAttribute('href')==='#'+cur);
+  });
+});
+
+// PHRASE ROTATOR 
+const roles=['Full-Stack Engineering','Aesthetic Curation','AI/ML System Architecture','Classic Literature Tracking'];
+let ri=0,ci=0,deleting=false;
+const roleEl=document.getElementById('role-text');
+function typeRole(){
+  const word=roles[ri];
+  if(!deleting){
+    roleEl.textContent=word.slice(0,ci+1);
+    ci++;
+    if(ci===word.length){deleting=true;setTimeout(typeRole,2000);return;}
+  }else{
+    roleEl.textContent=word.slice(0,ci-1);
+    ci--;
+    if(ci===0){deleting=false;ri=(ri+1)%roles.length;}
+  }
+  setTimeout(typeRole,deleting?40:80);
+}
+setTimeout(typeRole,2800);
+
+// INTERSECTION OBSERVER INTERFACE
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in-view');
+      const fill=e.target.querySelector('.skill-fill');
+      if(fill){
+        const w=e.target.parentElement.parentElement.getAttribute('data-skill')||80;
+        fill.style.transform=`scaleX(${w/100})`;
+      }
+    }
+  });
+},{threshold:0.1});
+document.querySelectorAll('.reveal,.timeline-item,.skill-card').forEach(el=>observer.observe(el));
+
+// SMOOTH INTER-SECTION NAVIGATION
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+</script>
+</body>
+</html>
